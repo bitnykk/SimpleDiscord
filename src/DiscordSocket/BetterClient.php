@@ -8,12 +8,12 @@ class BetterClient extends \WebSocket\Client {
 	}
 
 	public function connectIfNotConnected() {
-		if (!$this->is_connected) {
+		if (!isset($this->is_connected)||!$this->is_connected) {
 			$this->connect();
 		}
 	}
 
-	protected function read($length) {
+	protected function read(string $length): string {
 		$data = '';
 		while (strlen($data) < $length) {
 			$buffer = fread($this->socket, $length - strlen($data));
@@ -143,7 +143,7 @@ class BetterClient extends \WebSocket\Client {
 	}
 
 	public function receive() {
-		if (!$this->is_connected) {
+		if (!isset($this->is_connected)||!$this->is_connected) {
 			$this->connect();
 		}
 		/// @todo This is a client function, fixme!

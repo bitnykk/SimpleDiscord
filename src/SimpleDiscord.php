@@ -75,8 +75,9 @@ class SimpleDiscord {
 		], $this);
 
 		$this->user = $this->restClient->user->getUser();
-
-		$this->log("Authenticated as @".$this->user->username."#".$this->user->discriminator, 1);
+		if(isset($this->user->username)&&isset($this->user->discriminator)) {
+			$this->log("Authenticated as @".$this->user->username."#".$this->user->discriminator, 1);
+		}
 	}
 
 	public function run() {
@@ -84,6 +85,12 @@ class SimpleDiscord {
 		$this->socket = new \SimpleDiscord\DiscordSocket\DiscordSocket($this);
 		$this->socket->start();
 	}
+	
+	public function ping() {
+		$this->log("Pinging websocket", 1);
+		$this->socket = new \SimpleDiscord\DiscordSocket\DiscordSocket($this);
+		$this->socket->getSocket()->close();
+	}	
 
 	public function quit() {
 		$this->socket->getSocket()->close();
